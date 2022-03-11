@@ -1,5 +1,5 @@
 """
-Contains a Package Resolver that uses the Hochfrequenz API to resolve package keys to condition expressions
+Contains an asynchronous Package Resolver that, by default, uses the Hochfrequenz API to resolve packages.
 """
 import aiohttp
 from ahbicht.expressions.package_expansion import PackageResolver
@@ -13,14 +13,14 @@ class HochfrequenzPackageResolver(PackageResolver):
     Note that this resolver requires an internet connection to work and the Hochfrequenz API to be up and running.
     Consider using this resolver to retrieve package information once and then dump them into something fast and stable
     like f.e. a JSON file, a database or feed its results into a hardcoded package resolver once on startup.
-    Relying on external web services is prone to be a bottle neck for your application.
+    Relying on external web services is prone to be a bottleneck for your application.
     """
 
     _hochfrequenz_base_uri = "https://ahbicht.azurewebsites.net/api/ResolvePackageConditionExpression/"
 
     def __init__(self, api_url=_hochfrequenz_base_uri):
         """
-        initializes the package resolver; you may overwrite the base url (f.e. for a test-system)
+        initializes the package resolver; you may overwrite the base url (e.g. for a test-system)
         """
         self.api_url = api_url
 

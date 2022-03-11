@@ -6,7 +6,9 @@ import datetime
 
 import pytest  # type:ignore[import]
 from ahbicht.mapping_results import PackageKeyConditionExpressionMapping
-from aioresponses import CallbackResult, aioresponses
+
+# https://github.com/pnuckowski/aioresponses/issues/206
+from aioresponses import CallbackResult, aioresponses  # type:ignore[import]
 from maus.edifact import EdifactFormat, EdifactFormatVersion
 
 from ahbicht_functions_client import HochfrequenzPackageResolver
@@ -62,7 +64,6 @@ class TestHochfrequenzPackageResolver:
 
         with aioresponses() as mocked_server:
             tasks = []
-
             for x in range(1, 6):
                 mocked_server.get(url=f"https://test.inv/FV2204/UTILMD/{x}P", callback=wait_some_time)
                 tasks.append(package_resolver.get_condition_expression(f"{x}P"))
@@ -71,3 +72,17 @@ class TestHochfrequenzPackageResolver:
             end_time = datetime.datetime.now()
             assert (end_time - start_time).total_seconds() < 2  # meaning: significantly smaller than 5
             assert len(actual) == 5
+
+    async def test_async_behaviour_against_real_api(self):
+        """
+        This test is skipped by default because it calls a real API. Asserting on real APIs is not really an unittest.
+        Comment the skip to test locally (e.g. to create a concurrency diagram in local tests)
+        """
+        pytest.skip("This test uses the real API, we don't want to call eat in each CI run.")  # comment for local tests
+        package_resolver = HochfrequenzPackageResolver()
+        package_resolver.edifact_format = EdifactFormat.UTILMD
+        package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
+        tasks = [package_resolver.get_condition_expression(f"{x}P") for x in range(100)]
+        results = await asyncio.gather(*tasks)
+        for result in results:
+            assert isinstance(result, PackageKeyConditionExpressionMapping)
