@@ -11,7 +11,7 @@ from ahbicht.mapping_results import PackageKeyConditionExpressionMapping
 from aioresponses import CallbackResult, aioresponses  # type:ignore[import]
 from maus.edifact import EdifactFormat, EdifactFormatVersion
 
-from ahbicht_functions_client import HochfrequenzPackageResolver
+from ahbichtfunctionsclient import HochfrequenzPackageResolver
 
 pytestmark = pytest.mark.asyncio
 
@@ -37,10 +37,7 @@ class TestHochfrequenzPackageResolver:
         package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
 
         def simulate_error(url, **kwargs):
-            return CallbackResult(
-                status=200,
-                payload={"package_expression": "[20] \u2227 [244]", "package_key": "10P", "edifact_format": "UTILMD"},
-            )
+            return CallbackResult(status=400, payload={"it is not": "important what's here, just that you had to wait"})
 
         with aioresponses() as mocked_server:
             mocked_server.get(url="https://test.inv/FV2204/UTILMD/000P", callback=simulate_error, repeat=5)
