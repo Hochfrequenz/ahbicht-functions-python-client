@@ -6,6 +6,7 @@
 ![Black status badge](https://github.com/Hochfrequenz/ahbicht-functions-python-client/workflows/Black/badge.svg)
 
 This repository contains a lightweight client for an [AHBicht](https://github.com/Hochfrequenz/ahbicht) powered backend by Hochfrequenz.
+It does not duplicate the core AHBicht logic but provides a [PackageResolver](https://ahbicht.readthedocs.io/en/latest/api/ahbicht.expressions.html?highlight=PackageResolver#ahbicht.expressions.package_expansion.PackageResolver) that accesses a database that stores [`PackageKeyConditionExpressionMapping`s](https://ahbicht.readthedocs.io/en/latest/api/ahbicht.html#ahbicht.mapping_results.PackageKeyConditionExpressionMapping). The database is maintained by Hochfrequenz.
 
 ## How to use the Client
 - Install using pip:
