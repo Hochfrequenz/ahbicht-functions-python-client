@@ -15,15 +15,23 @@ pip install ahbichtfunctionsclient
 Then call it
 
 ```python
+import asyncio
+
 from ahbicht.mapping_results import PackageKeyConditionExpressionMapping
 from ahbichtfunctionsclient import HochfrequenzPackageResolver
 from maus.edifact import EdifactFormat, EdifactFormatVersion
 
-package_resolver = HochfrequenzPackageResolver()
-package_resolver.edifact_format = EdifactFormat.UTILMD
-package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
-package_mapping = await package_resolver.get_condition_expression("10P")
-assert isinstance(package_mapping, PackageKeyConditionExpressionMapping)
+
+async def retrieve_package_mwe():
+    package_resolver = HochfrequenzPackageResolver()
+    package_resolver.edifact_format = EdifactFormat.UTILMD
+    package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
+    package_mapping = await package_resolver.get_condition_expression("10P")
+    assert isinstance(package_mapping, PackageKeyConditionExpressionMapping)
+
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(retrieve_package_mwe())
 ```
 
 ## How to use this Repository on Your Machine (for development)
