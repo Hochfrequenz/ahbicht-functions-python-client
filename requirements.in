@@ -1,2 +1,4 @@
 ahbicht
 aiohttp
+
+# any requirement added here has to be added in setup.cfg, too
