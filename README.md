@@ -39,6 +39,12 @@ loop = asyncio.get_event_loop()
 loop.run_until_complete(retrieve_package_mwe())
 ```
 
+## Production Readiness
+This package has a 100% code coverage, is linted, statically type checked and PEP561 compatible.
+It relies on a Hochfrequenz API which is, as of today (2022-03-17), free to use.
+Hochfrequenz does not give any guarantees regarding the stability or uptime of the API.
+Also at one point it might require authorization.
+
 ## How to use this Repository on Your Machine (for development)
 
 Please follow the instructions in our [Python Template Repository](https://github.com/Hochfrequenz/python_template_repository#how-to-use-this-repository-on-your-machine).
