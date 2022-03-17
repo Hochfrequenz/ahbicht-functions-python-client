@@ -26,11 +26,13 @@ from maus.edifact import EdifactFormat, EdifactFormatVersion
 
 
 async def retrieve_package_mwe():
+    # for a documentation about the purpose of a package resolver, you should read the ahbicht docs
     package_resolver = HochfrequenzPackageResolver()
+    # the following data are just hardcoded to provide you a minimal working example
     package_resolver.edifact_format = EdifactFormat.UTILMD
     package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
-    package_mapping = await package_resolver.get_condition_expression("10P")
-    assert isinstance(package_mapping, PackageKeyConditionExpressionMapping)
+    package_mapping = await package_resolver.get_condition_expression("10P")  # this does an HTTP GET request
+    assert isinstance(package_mapping, PackageKeyConditionExpressionMapping)  # the result is ahbicht compatible
 
 
 loop = asyncio.get_event_loop()
