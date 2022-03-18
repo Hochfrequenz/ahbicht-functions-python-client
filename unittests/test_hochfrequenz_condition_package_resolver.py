@@ -11,7 +11,13 @@ from ahbicht.mapping_results import ConditionKeyConditionTextMapping
 from aioresponses import CallbackResult, aioresponses  # type:ignore[import]
 from maus.edifact import EdifactFormat, EdifactFormatVersion
 
-from src.ahbichtfunctionsclient import HochfrequenzPackageResolver
+from ahbichtfunctionsclient.hochfrequenzpackageresolver import HochfrequenzPackageResolver
+
+# import src.ahbichtfunctionsclient.HochfrequenzPackageResolver as hpr
+# from ahbichtfunctionsclient import HochfrequenzPackageResolver
+# import src.ahbichtfunctionsclient.hochfrequenzpackageresolver as ahb
+# import ahbichtfunctionsclient.hochfrequenzpackageresolver as ahb
+
 
 pytestmark = pytest.mark.asyncio
 
@@ -23,10 +29,10 @@ class TestHochfrequenzPackageResolver:
         package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
         with aioresponses() as mocked_server:
             mocked_server.get(
-                "https://test.inv/FV2204/UTILMD/10P",
+                "https://test.inv/FV2204/UTILMD/146",
                 payload={
                     "condition_text": "[145] Wenn SG10 CCI+Z31++ZA8 (bereits ausg. Aggreg.verantw. in MaBiS: NB)  vor- handen",
-                    "condition_key": "145",
+                    "condition_key": "146",
                     "edifact_format": "UTILMD",
                 },
             )
@@ -46,14 +52,14 @@ class TestHochfrequenzPackageResolver:
             return CallbackResult(status=400, payload={"it is not": "important what's here, just that you had to wait"})
 
         with aioresponses() as mocked_server:
-            mocked_server.get(url="https://test.inv/FV2204/UTILMD/000P", callback=simulate_error, repeat=5)
+            mocked_server.get(url="https://test.inv/FV2204/UTILMD/406", callback=simulate_error, repeat=5)
             actual = await package_resolver.get_condition_mapping("406")
             assert actual == ConditionKeyConditionTextMapping(
                 # see the documentation: if the package could not be resolved, you'll get a None package_expression
                 # but the PackageKeyConditionExpressionMapping itself is _not_ None
                 edifact_format=EdifactFormat.UTILMD,
-                package_key="406",
-                package_expression=None,
+                condition_key="406",
+                condition_text=None,
             )
 
     async def test_async_behaviour(self):
