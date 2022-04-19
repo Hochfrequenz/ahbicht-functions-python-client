@@ -1,5 +1,6 @@
 """
-Contains an asynchronous Package Resolver that, by default, uses the Hochfrequenz API to resolve packages.
+Contains two asynchronous Resolvers that, by default, use the Hochfrequenz API to retrieve a
+condition expression or a condition text for a given package/condition key.
 """
 import aiohttp
 from ahbicht.expressions.package_expansion import PackageResolver
