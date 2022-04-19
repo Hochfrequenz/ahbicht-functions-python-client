@@ -1,5 +1,5 @@
 """
-Contains two asynchronous Resolver that, by default, uses the Hochfrequenz API to request a
+Contains two asynchronous Resolvers that, by default, use the Hochfrequenz API to retrieve a
 Condition Expression or a Condition Text for a given Package/Condition Key.
 """
 import aiohttp
