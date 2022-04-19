@@ -1,17 +1,12 @@
 import aiohttp
 from ahbicht.expressions.package_expansion import PackageResolver
-from ahbicht.mapping_results import (
-    ConditionKeyConditionTextMapping,
-    ConditionKeyConditionTextMappingSchema,
-    PackageKeyConditionExpressionMapping,
-    PackageKeyConditionExpressionMappingSchema,
-)
+from ahbicht.mapping_results import PackageKeyConditionExpressionMapping, PackageKeyConditionExpressionMappingSchema
 
 
 # pylint: disable=too-few-public-methods
 class HochfrequenzPackageResolver(PackageResolver):
     """
-    A package resolver that uses a REST API (by Hochfrequenz) to resolve packages.
+    A package resolver that uses a REST API (by Hochfrequenz) to request a ConditionExpression for a given PackageKey.
     Note that this resolver requires an internet connection to work and the Hochfrequenz API to be up and running.
     Consider using this resolver to retrieve package information once and then dump them into something fast and stable
     like e.g. a JSON file, a database or feed its results into a hardcoded package resolver once on startup.
@@ -37,17 +32,4 @@ class HochfrequenzPackageResolver(PackageResolver):
                     )
                 response_body = await response.json()
                 result = PackageKeyConditionExpressionMappingSchema().load(response_body)
-                return result
-
-    async def get_condition_mapping(self, condition_key: str) -> ConditionKeyConditionTextMapping:
-        request_url = f"{self.api_url}/{self.edifact_format_version}/{self.edifact_format}/{condition_key}"
-        async with aiohttp.ClientSession() as session:
-            async with session.get(request_url) as response:
-                print("Status:", response.status)
-                if response.status != 200:
-                    return ConditionKeyConditionTextMapping(
-                        edifact_format=self.edifact_format, condition_key=condition_key, condition_text=None
-                    )
-                response_body = await response.json()
-                result = ConditionKeyConditionTextMappingSchema().load(response_body)
                 return result
