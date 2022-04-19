@@ -5,6 +5,7 @@ import asyncio
 import datetime
 
 import pytest  # type:ignore[import]
+from ahbicht.expressions.package_expansion import PackageResolver
 from ahbicht.mapping_results import PackageKeyConditionExpressionMapping
 
 # https://github.com/pnuckowski/aioresponses/issues/206
@@ -18,7 +19,7 @@ pytestmark = pytest.mark.asyncio
 
 class TestHochfrequenzPackageResolver:
     async def test_hochfrequenz_package_api_success(self):
-        package_resolver = HochfrequenzPackageResolver(api_url="https://test.inv")
+        package_resolver: PackageResolver = HochfrequenzPackageResolver(api_url="https://test.inv")
         package_resolver.edifact_format = EdifactFormat.UTILMD
         package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
         with aioresponses() as mocked_server:
@@ -32,7 +33,7 @@ class TestHochfrequenzPackageResolver:
             )
 
     async def test_hochfrequenz_package_api_failure(self):
-        package_resolver = HochfrequenzPackageResolver(api_url="https://test.inv")
+        package_resolver: PackageResolver = HochfrequenzPackageResolver(api_url="https://test.inv")
         package_resolver.edifact_format = EdifactFormat.UTILMD
         package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
 
@@ -51,7 +52,7 @@ class TestHochfrequenzPackageResolver:
             )
 
     async def test_async_behaviour(self):
-        package_resolver = HochfrequenzPackageResolver(api_url="https://test.inv")
+        package_resolver: PackageResolver = HochfrequenzPackageResolver(api_url="https://test.inv")
         package_resolver.edifact_format = EdifactFormat.UTILMD
         package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
 
@@ -76,7 +77,7 @@ class TestHochfrequenzPackageResolver:
         Comment the skip to test locally (e.g. to create a concurrency diagram in local tests)
         """
         pytest.skip("This test uses the real API, we don't want to call eat in each CI run.")  # comment for local tests
-        package_resolver = HochfrequenzPackageResolver()
+        package_resolver: PackageResolver = HochfrequenzPackageResolver()
         package_resolver.edifact_format = EdifactFormat.UTILMD
         package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
         tasks = [package_resolver.get_condition_expression(f"{x}P") for x in range(100)]
