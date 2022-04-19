@@ -1,6 +1,6 @@
 """
 Contains two asynchronous Resolvers that, by default, use the Hochfrequenz API to retrieve a
-Condition Expression or a Condition Text for a given Package/Condition Key.
+condition expression or a condition text for a given package/condition key.
 """
 import aiohttp
 from ahbicht.expressions.package_expansion import PackageResolver
