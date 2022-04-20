@@ -78,7 +78,6 @@ class HochfrequenzConditionResolver:
         request_url = f"{self.api_url}/{self.edifact_format_version}/{self.edifact_format}/{condition_key}"
         async with aiohttp.ClientSession() as session:
             async with session.get(request_url) as response:
-                print("Status:", response.status)
                 if response.status != 200:
                     return ConditionKeyConditionTextMapping(
                         condition_key=condition_key, condition_text=None, edifact_format=self.edifact_format
