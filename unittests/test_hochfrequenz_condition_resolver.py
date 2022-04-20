@@ -25,18 +25,18 @@ class TestHochfrequenzConditionResolver:
         )
         with aioresponses() as mocked_server:
             mocked_server.get(
-                "https://test.inv/FV2204/UTILMD/10P",
+                "https://test.inv/FV2204/UTILMD/123",
                 payload={
-                    "condition_text": "Wenn foo[56] und bar[99] dann FooBar.",
-                    "condition_key": "10P",
+                    "condition_text": "Wenn Foo",
+                    "condition_key": "123",
                     "edifact_format": "UTILMD",
                 },
             )
             actual = await condition_resolver.get_condition_text("10P")
             assert actual == ConditionKeyConditionTextMapping(
                 edifact_format=EdifactFormat.UTILMD,
-                condition_key="10P",
-                condition_text="Wenn foo[56] und bar[99] dann FooBar.",
+                condition_key="123",
+                condition_text="Wenn Foo",
             )
 
     async def test_hochfrequenz_condition_api_failure(self):
