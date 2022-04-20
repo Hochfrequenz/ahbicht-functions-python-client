@@ -50,7 +50,7 @@ class TestHochfrequenzConditionResolver:
             return CallbackResult(status=400, payload={"it is not": "important what's here, just that you had to wait"})
 
         with aioresponses() as mocked_server:
-            mocked_server.get(url="https://test.inv/FV2204/UTILMD/001", callback=simulate_error, repeat=5)
+            mocked_server.get(url="https://test.inv/FV2204/UTILMD/001", callback=simulate_error)
             actual = await condition_resolver.get_condition_text("001")
             assert actual == ConditionKeyConditionTextMapping(
                 # see the documentation: if the package could not be resolved, you'll get a None package_expression
