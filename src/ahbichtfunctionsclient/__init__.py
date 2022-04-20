@@ -64,7 +64,7 @@ class HochfrequenzConditionResolver:
         api_url=_hochfrequenz_base_condition_uri,
     ):
         """
-        initializes the condition resolver and collect the edifact format as well as the version of the format.
+        initializes the condition resolver and collects the edifact format as well as the version of the format.
         """
         self.api_url = api_url
         self.edifact_format = edifact_format
