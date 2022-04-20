@@ -32,7 +32,7 @@ class TestHochfrequenzConditionResolver:
                     "edifact_format": "UTILMD",
                 },
             )
-            actual = await condition_resolver.get_condition_text("10P")
+            actual = await condition_resolver.get_condition_text("123")
             assert actual == ConditionKeyConditionTextMapping(
                 edifact_format=EdifactFormat.UTILMD,
                 condition_key="123",

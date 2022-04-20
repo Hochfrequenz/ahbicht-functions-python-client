@@ -21,7 +21,8 @@ from maus.edifact import EdifactFormat, EdifactFormatVersion
 # pylint: disable=too-few-public-methods
 class HochfrequenzPackageResolver(PackageResolver):
     """
-    A package resolver that uses a REST API (by Hochfrequenz) to retrieve a condition expression for a given package key.
+    A package resolver that uses a REST API (by Hochfrequenz) to retrieve a condition expression for a given package
+    key.
     """
 
     _hochfrequenz_base_uri = "https://ahbicht.azurewebsites.net/api/ResolvePackageConditionExpression/"
