@@ -53,8 +53,8 @@ class TestHochfrequenzConditionResolver:
             mocked_server.get(url="https://test.inv/FV2204/UTILMD/001", callback=simulate_error)
             actual = await condition_resolver.get_condition_text("001")
             assert actual == ConditionKeyConditionTextMapping(
-                # see the documentation: if the package could not be resolved, you'll get a None package_expression
-                # but the PackageKeyConditionExpressionMapping itself is _not_ None
+                # see the documentation: if the condition could not be resolved, you'll get a None condition_text
+                # but the ConditionKeyConditionTextMapping itself is _not_ None
                 edifact_format=EdifactFormat.UTILMD,
                 condition_key="001",
                 condition_text=None,
