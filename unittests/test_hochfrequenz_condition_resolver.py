@@ -74,8 +74,8 @@ class TestHochfrequenzConditionResolver:
         with aioresponses() as mocked_server:
             tasks = []
             for x in range(1, 6):
-                mocked_server.get(url=f"https://test.inv/FV2204/UTILMD/{x}P", callback=wait_some_time)
-                tasks.append(condition_resolver.get_condition_text(f"{x}P"))
+                mocked_server.get(url=f"https://test.inv/FV2204/UTILMD/{x}", callback=wait_some_time)
+                tasks.append(condition_resolver.get_condition_text(f"{x}"))
             start_time = datetime.datetime.now()
             actual = await asyncio.gather(*tasks)
             end_time = datetime.datetime.now()
