@@ -93,7 +93,7 @@ class TestHochfrequenzConditionResolver:
             edifact_format=EdifactFormat.UTILMD,
             api_url="https://test.inv",
         )
-        tasks = [condition_resolver.get_condition_text(f"{x}P") for x in range(100)]
+        tasks = [condition_resolver.get_condition_text(f"{x}") for x in range(100)]
         results = await asyncio.gather(*tasks)
         for result in results:
             assert isinstance(result, ConditionKeyConditionTextMapping)
