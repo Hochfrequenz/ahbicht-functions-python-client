@@ -16,7 +16,7 @@ from maus.edifact import EdifactFormat, EdifactFormatVersion
 # pylint: disable=too-few-public-methods
 class HochfrequenzPackageResolver(PackageResolver):
     """
-    A package resolver that uses a REST API (by Hochfrequenz) to request a condition expression for a given package key.
+    A package resolver that uses a REST API (by Hochfrequenz) to retrieve a condition expression for a given package key.
     Note that this resolver requires an internet connection to work and the Hochfrequenz API to be up and running.
     Consider using this resolver to retrieve package information once and then dump them into something fast and stable
     like e.g. a JSON file, a database or feed its results into a hardcoded package resolver once on startup.
