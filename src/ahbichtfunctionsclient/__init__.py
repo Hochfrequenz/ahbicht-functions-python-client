@@ -1,6 +1,11 @@
 """
 Contains two asynchronous Resolvers that, by default, use the Hochfrequenz API to retrieve a
 condition expression or a condition text for a given package/condition key.
+
+NOTE that both resolver requires an internet connection to work and the Hochfrequenz API to be up and running.
+Consider using this resolver to retrieve package information once and then dump them into something fast and stable
+like e.g. a JSON file, a database or feed its results into a hardcoded package resolver once on startup.
+Relying on external web services is prone to be a bottleneck for your application.
 """
 import aiohttp
 from ahbicht.expressions.package_expansion import PackageResolver
@@ -17,10 +22,6 @@ from maus.edifact import EdifactFormat, EdifactFormatVersion
 class HochfrequenzPackageResolver(PackageResolver):
     """
     A package resolver that uses a REST API (by Hochfrequenz) to retrieve a condition expression for a given package key.
-    Note that this resolver requires an internet connection to work and the Hochfrequenz API to be up and running.
-    Consider using this resolver to retrieve package information once and then dump them into something fast and stable
-    like e.g. a JSON file, a database or feed its results into a hardcoded package resolver once on startup.
-    Relying on external web services is prone to be a bottleneck for your application.
     """
 
     _hochfrequenz_base_uri = "https://ahbicht.azurewebsites.net/api/ResolvePackageConditionExpression/"
@@ -49,10 +50,6 @@ class HochfrequenzPackageResolver(PackageResolver):
 class HochfrequenzConditionResolver:
     """
     Uses a REST API (by Hochfrequenz) to retrieve a condition text for a given condition key.
-    Note that this resolver requires an internet connection to work and the Hochfrequenz API to be up and running.
-    Consider using this resolver to retrieve condition information once and then dump them into something fast and stable
-    like e.g. a JSON file, a database or feed its results into a hardcoded package resolver once on startup.
-    Relying on external web services is prone to be a bottleneck for your application.
     """
 
     _hochfrequenz_base_condition_uri = "https://ahbicht.azurewebsites.net/api/ResolveConditionText/"
