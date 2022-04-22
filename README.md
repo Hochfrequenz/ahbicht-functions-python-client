@@ -4,6 +4,7 @@
 ![Coverage status badge](https://github.com/Hochfrequenz/ahbicht-functions-python-client/workflows/Coverage/badge.svg)
 ![Linting status badge](https://github.com/Hochfrequenz/ahbicht-functions-python-client/workflows/Linting/badge.svg)
 ![Black status badge](https://github.com/Hochfrequenz/ahbicht-functions-python-client/workflows/Black/badge.svg)
+![PyPi Status Badge](https://img.shields.io/pypi/v/ahbichtfunctionsclient)
 
 This repository contains a lightweight client for an [AHBicht](https://github.com/Hochfrequenz/ahbicht) powered backend by Hochfrequenz.
 It does not duplicate the core AHBicht logic but provides a [PackageResolver](https://ahbicht.readthedocs.io/en/latest/api/ahbicht.expressions.html?highlight=PackageResolver#ahbicht.expressions.package_expansion.PackageResolver)
@@ -34,8 +35,6 @@ async def retrieve_package_key_condition_expression_mapping():
     package_mapping = await package_resolver.get_condition_expression("10P")  # this does an HTTP GET request
     assert isinstance(package_mapping, PackageKeyConditionExpressionMapping)  # the result is ahbicht compatible
 
-package_loop = asyncio.get_event_loop()
-package_loop.run_until_complete(retrieve_package_key_condition_expression_mapping())
 
 async def retrieve_condition_key_condition_text_mapping():
     condition_resolver = HochfrequenzPackageResolver(EdifactFormatVersion.FV2204, EdifactFormat.UTILMD)
@@ -44,8 +43,13 @@ async def retrieve_condition_key_condition_text_mapping():
     assert isinstance(condition_mapping, ConditionKeyConditionTextMapping)  # the result is ahbicht compatible
 
 
-condition_loop = asyncio.get_event_loop()
-condition_loop.run_until_complete(retrieve_condition_key_condition_text_mapping())
+async def minimal_working_example():
+    await retrieve_condition_key_condition_text_mapping()
+    await retrieve_package_key_condition_expression_mapping()
+
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(minimal_working_example())
 ```
 
 ## Production Readiness
@@ -59,7 +63,7 @@ Also at one point it might require authorization.
 Please follow the instructions in our [Python Template Repository](https://github.com/Hochfrequenz/python_template_repository#how-to-use-this-repository-on-your-machine).
 And for futher information, see the [Tox Repository](https://github.com/tox-dev/tox).
 
-You can also check out our [MIG AHB Utility Stack (MAUS)](https://github.com/Hochfrequenz/mig_ahb_utility_stack) and [AHBicht](https://github.com/Hochfrequenz/ahbicht) repository's.
+You can also check out our [MIG AHB Utility Stack (MAUS)](https://github.com/Hochfrequenz/mig_ahb_utility_stack) and [AHBicht](https://github.com/Hochfrequenz/ahbicht) repositories.
 
 ## Contribute
 
