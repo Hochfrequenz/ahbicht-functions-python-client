@@ -29,11 +29,18 @@ class HochfrequenzPackageResolver(PackageResolver):
 
     _hochfrequenz_base_uri = "https://ahbicht.azurewebsites.net/api/ResolvePackageConditionExpression/"
 
-    def __init__(self, api_url=_hochfrequenz_base_uri):
+    def __init__(
+        self,
+        edifact_format_version: EdifactFormatVersion,
+        edifact_format: EdifactFormat,
+        api_url=_hochfrequenz_base_uri,
+    ):
         """
         initializes the package resolver; you may overwrite the base url (e.g. for a test-system)
         """
         self.api_url = api_url
+        self.edifact_format = edifact_format
+        self.edifact_format_version = edifact_format_version
 
     async def get_condition_expression(self, package_key: str) -> PackageKeyConditionExpressionMapping:
         request_url = f"{self.api_url}/{self.edifact_format_version}/{self.edifact_format}/{package_key}"
