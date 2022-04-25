@@ -91,7 +91,6 @@ class TestHochfrequenzConditionResolver:
         condition_resolver = HochfrequenzConditionResolver(
             edifact_format_version=EdifactFormatVersion.FV2204,
             edifact_format=EdifactFormat.UTILMD,
-            api_url="https://test.inv",
         )
         tasks = [condition_resolver.get_condition_text(f"{x}") for x in range(100)]
         results = await asyncio.gather(*tasks)

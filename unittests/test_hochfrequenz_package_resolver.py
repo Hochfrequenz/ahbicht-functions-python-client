@@ -19,9 +19,9 @@ pytestmark = pytest.mark.asyncio
 
 class TestHochfrequenzPackageResolver:
     async def test_hochfrequenz_package_api_success(self):
-        package_resolver: PackageResolver = HochfrequenzPackageResolver(api_url="https://test.inv")
-        package_resolver.edifact_format = EdifactFormat.UTILMD
-        package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
+        package_resolver: PackageResolver = HochfrequenzPackageResolver(
+            EdifactFormatVersion.FV2204, EdifactFormat.UTILMD, api_url="https://test.inv"
+        )
         with aioresponses() as mocked_server:
             mocked_server.get(
                 "https://test.inv/FV2204/UTILMD/10P",
@@ -33,9 +33,9 @@ class TestHochfrequenzPackageResolver:
             )
 
     async def test_hochfrequenz_package_api_failure(self):
-        package_resolver: PackageResolver = HochfrequenzPackageResolver(api_url="https://test.inv")
-        package_resolver.edifact_format = EdifactFormat.UTILMD
-        package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
+        package_resolver: PackageResolver = HochfrequenzPackageResolver(
+            EdifactFormatVersion.FV2204, EdifactFormat.UTILMD, api_url="https://test.inv"
+        )
 
         def simulate_error(url, **kwargs):
             return CallbackResult(status=400, payload={"it is not": "important what's here, just that you had to wait"})
@@ -52,9 +52,9 @@ class TestHochfrequenzPackageResolver:
             )
 
     async def test_async_behaviour(self):
-        package_resolver: PackageResolver = HochfrequenzPackageResolver(api_url="https://test.inv")
-        package_resolver.edifact_format = EdifactFormat.UTILMD
-        package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
+        package_resolver: PackageResolver = HochfrequenzPackageResolver(
+            EdifactFormatVersion.FV2204, EdifactFormat.UTILMD, api_url="https://test.inv"
+        )
 
         async def wait_some_time(url, **kwargs):
             await asyncio.sleep(1)
@@ -77,9 +77,9 @@ class TestHochfrequenzPackageResolver:
         Comment the skip to test locally (e.g. to create a concurrency diagram in local tests)
         """
         pytest.skip("This test uses the real API, we don't want to call eat in each CI run.")  # comment for local tests
-        package_resolver: PackageResolver = HochfrequenzPackageResolver()
-        package_resolver.edifact_format = EdifactFormat.UTILMD
-        package_resolver.edifact_format_version = EdifactFormatVersion.FV2204
+        package_resolver: PackageResolver = HochfrequenzPackageResolver(
+            EdifactFormatVersion.FV2204, EdifactFormat.UTILMD
+        )
         tasks = [package_resolver.get_condition_expression(f"{x}P") for x in range(100)]
         results = await asyncio.gather(*tasks)
         for result in results:
