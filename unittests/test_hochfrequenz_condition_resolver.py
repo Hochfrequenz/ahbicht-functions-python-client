@@ -19,13 +19,13 @@ pytestmark = pytest.mark.asyncio
 class TestHochfrequenzConditionResolver:
     async def test_hochfrequenz_condition_api_success(self):
         condition_resolver = HochfrequenzConditionResolver(
-            edifact_format_version=EdifactFormatVersion.FV2204,
+            edifact_format_version=EdifactFormatVersion.FV2210,
             edifact_format=EdifactFormat.UTILMD,
             api_url="https://test.inv",
         )
         with aioresponses() as mocked_server:
             mocked_server.get(
-                "https://test.inv/FV2204/UTILMD/123",
+                "https://test.inv/FV2210/UTILMD/123",
                 payload={
                     "condition_text": "Wenn Foo",
                     "condition_key": "123",
@@ -41,7 +41,7 @@ class TestHochfrequenzConditionResolver:
 
     async def test_hochfrequenz_condition_api_failure(self):
         condition_resolver = HochfrequenzConditionResolver(
-            edifact_format_version=EdifactFormatVersion.FV2204,
+            edifact_format_version=EdifactFormatVersion.FV2210,
             edifact_format=EdifactFormat.UTILMD,
             api_url="https://test.inv",
         )
@@ -50,7 +50,7 @@ class TestHochfrequenzConditionResolver:
             return CallbackResult(status=400, payload={"it is not": "important what's here, just that you had to wait"})
 
         with aioresponses() as mocked_server:
-            mocked_server.get(url="https://test.inv/FV2204/UTILMD/001", callback=simulate_error)
+            mocked_server.get(url="https://test.inv/FV2210/UTILMD/001", callback=simulate_error)
             actual = await condition_resolver.get_condition_text("001")
             assert actual == ConditionKeyConditionTextMapping(
                 # see the documentation: if the condition could not be resolved, you'll get a None condition_text
@@ -62,7 +62,7 @@ class TestHochfrequenzConditionResolver:
 
     async def test_async_behaviour(self):
         condition_resolver = HochfrequenzConditionResolver(
-            edifact_format_version=EdifactFormatVersion.FV2204,
+            edifact_format_version=EdifactFormatVersion.FV2210,
             edifact_format=EdifactFormat.UTILMD,
             api_url="https://test.inv",
         )
@@ -74,7 +74,7 @@ class TestHochfrequenzConditionResolver:
         with aioresponses() as mocked_server:
             tasks = []
             for x in range(1, 6):
-                mocked_server.get(url=f"https://test.inv/FV2204/UTILMD/{x}", callback=wait_some_time)
+                mocked_server.get(url=f"https://test.inv/FV2210/UTILMD/{x}", callback=wait_some_time)
                 tasks.append(condition_resolver.get_condition_text(f"{x}"))
             start_time = datetime.datetime.now()
             actual = await asyncio.gather(*tasks)
@@ -89,7 +89,7 @@ class TestHochfrequenzConditionResolver:
         """
         pytest.skip("This test uses the real API, we don't want to call eat in each CI run.")  # comment for local tests
         condition_resolver = HochfrequenzConditionResolver(
-            edifact_format_version=EdifactFormatVersion.FV2204,
+            edifact_format_version=EdifactFormatVersion.FV2210,
             edifact_format=EdifactFormat.UTILMD,
         )
         tasks = [condition_resolver.get_condition_text(f"{x}") for x in range(100)]
