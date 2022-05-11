@@ -20,11 +20,11 @@ pytestmark = pytest.mark.asyncio
 class TestHochfrequenzPackageResolver:
     async def test_hochfrequenz_package_api_success(self):
         package_resolver: PackageResolver = HochfrequenzPackageResolver(
-            EdifactFormatVersion.FV2204, EdifactFormat.UTILMD, api_url="https://test.inv"
+            EdifactFormatVersion.FV2210, EdifactFormat.UTILMD, api_url="https://test.inv"
         )
         with aioresponses() as mocked_server:
             mocked_server.get(
-                "https://test.inv/FV2204/UTILMD/10P",
+                "https://test.inv/FV2210/UTILMD/10P",
                 payload={"package_expression": "[20] \u2227 [244]", "package_key": "10P", "edifact_format": "UTILMD"},
             )
             actual = await package_resolver.get_condition_expression("10P")
@@ -34,14 +34,14 @@ class TestHochfrequenzPackageResolver:
 
     async def test_hochfrequenz_package_api_failure(self):
         package_resolver: PackageResolver = HochfrequenzPackageResolver(
-            EdifactFormatVersion.FV2204, EdifactFormat.UTILMD, api_url="https://test.inv"
+            EdifactFormatVersion.FV2210, EdifactFormat.UTILMD, api_url="https://test.inv"
         )
 
         def simulate_error(url, **kwargs):
             return CallbackResult(status=400, payload={"it is not": "important what's here, just that you had to wait"})
 
         with aioresponses() as mocked_server:
-            mocked_server.get(url="https://test.inv/FV2204/UTILMD/000P", callback=simulate_error, repeat=5)
+            mocked_server.get(url="https://test.inv/FV2210/UTILMD/000P", callback=simulate_error, repeat=5)
             actual = await package_resolver.get_condition_expression("000P")
             assert actual == PackageKeyConditionExpressionMapping(
                 # see the documentation: if the package could not be resolved, you'll get a None package_expression
@@ -53,7 +53,7 @@ class TestHochfrequenzPackageResolver:
 
     async def test_async_behaviour(self):
         package_resolver: PackageResolver = HochfrequenzPackageResolver(
-            EdifactFormatVersion.FV2204, EdifactFormat.UTILMD, api_url="https://test.inv"
+            EdifactFormatVersion.FV2210, EdifactFormat.UTILMD, api_url="https://test.inv"
         )
 
         async def wait_some_time(url, **kwargs):
@@ -63,7 +63,7 @@ class TestHochfrequenzPackageResolver:
         with aioresponses() as mocked_server:
             tasks = []
             for x in range(1, 6):
-                mocked_server.get(url=f"https://test.inv/FV2204/UTILMD/{x}P", callback=wait_some_time)
+                mocked_server.get(url=f"https://test.inv/FV2210/UTILMD/{x}P", callback=wait_some_time)
                 tasks.append(package_resolver.get_condition_expression(f"{x}P"))
             start_time = datetime.datetime.now()
             actual = await asyncio.gather(*tasks)
@@ -78,7 +78,7 @@ class TestHochfrequenzPackageResolver:
         """
         pytest.skip("This test uses the real API, we don't want to call eat in each CI run.")  # comment for local tests
         package_resolver: PackageResolver = HochfrequenzPackageResolver(
-            EdifactFormatVersion.FV2204, EdifactFormat.UTILMD
+            EdifactFormatVersion.FV2210, EdifactFormat.UTILMD
         )
         tasks = [package_resolver.get_condition_expression(f"{x}P") for x in range(100)]
         results = await asyncio.gather(*tasks)
