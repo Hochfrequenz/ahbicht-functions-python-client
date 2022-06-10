@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements.in
 #
-ahbicht==0.1.14
+ahbicht==0.2.0
     # via -r requirements.in
 aiohttp==3.8.1
     # via -r requirements.in
