@@ -29,7 +29,7 @@ inject==4.3.1
     # via ahbicht
 lark==1.1.2
     # via ahbicht
-lxml==4.8.0
+lxml==4.9.1
     # via maus
 marshmallow==3.14.1
     # via
